@@ -1,0 +1,70 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mysql-exporter
+  namespace: monitoring
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mysql-exporter
+    spec:
+      containers:
+        - name: mysql-exporter-test
+          env:
+          - name: DATA_SOURCE_NAME
+            value: root:mysql8888@(mysql.test.svc.cluster.local:3306)/
+          image: prom/mysqld-exporter
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 9104
+            protocol: TCP
+        - name: mysql-exporter-dev
+          args: 
+          - --web.listen-address=0.0.0.0:9105
+          env: 
+          - name: DATA_SOURCE_NAME
+            value: root:mysql8888@(mysql.dev.svc.cluster.local:3306)/
+          image: prom/mysqld-exporter
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 9105
+            protocol: TCP
+             
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-exporter-test-svc
+  labels:
+    k8s-app: mysql-exporter
+  namespace: monitoring
+spec:
+  ports:
+    - port: 9104
+      targetPort: 9104
+      protocol: TCP
+      name: http-test-mysql-exporter
+  selector:
+    app: mysql-exporter
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-export-dev-svc
+  labels: 
+    k8s-app: mysql-exporter
+  namespace: monitoring
+spec:
+  ports:
+    - port: 9105
+      targetPort: 9105
+      protocol: TCP
+      name: http-dev-mysql-exporter
+  selector:
+    app: mysql-exporter
+

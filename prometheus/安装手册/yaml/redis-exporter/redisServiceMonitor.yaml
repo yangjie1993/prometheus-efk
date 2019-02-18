@@ -1,0 +1,25 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    k8s-app: redis-exporter
+  name: redis-exporter
+  namespace: monitoring
+spec:
+  endpoints:
+  - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    interval: 30s
+    port: https
+    scheme: http
+    tlsConfig:
+      insecureSkipVerify: true
+#      caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+  namespaceSelector:
+    matchNames:
+    - business
+    - monitoring
+  jobLabel: k8s-app
+  selector:
+    matchLabels:
+      k8s-app: redis-exporter
+#

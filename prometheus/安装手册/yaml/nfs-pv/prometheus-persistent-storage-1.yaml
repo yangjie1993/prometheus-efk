@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: prometheus-k8s-db-1
+  namespace: monitoring
+  labels:
+     app: prometheus-k8s-db 
+spec:
+  capacity:
+    storage: 80Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    # FIXED: Use internal DNS name
+    server: 10.105.19.168
+    path: "/promethues"
+
