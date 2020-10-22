@@ -7,7 +7,7 @@ Prometheus是继Kubernetes之后CNCF基金会的第二个项目，最早也是�
 Prometheus是一个开源的完整监控解决方案，涵盖数据采集、查询、告警、展示整个监控流程，下图是Prometheus的架构图：
 
 
-![prometheus1](/uploads/f37cc8ba5fbf2c85433ddbb04e809b80/prometheus1.png)
+![prometheus1](https://github.com/yangjie1993/prometheus-efk/blob/master/prometheus/picture/prometheus1.png)
 
 
 ### Prometheus Server
